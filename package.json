@@ -1,0 +1,28 @@
+{
+  "name": "lan_alert_notifications",
+  "version": "1.0.0",
+  "description": "Microservice that notifies you of alerts impacting your friends and family",
+  "main": "server.js",
+  "scripts": {
+    "server-dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N3-Hercules/LAN_Alert_Notifications.git"
+  },
+  "author": "Nicolas Turner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N3-Hercules/LAN_Alert_Notifications/issues"
+  },
+  "homepage": "https://github.com/N3-Hercules/LAN_Alert_Notifications#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "nodemailer": "^4.6.8",
+    "nodemon": "^1.18.4"
+  }
+}
