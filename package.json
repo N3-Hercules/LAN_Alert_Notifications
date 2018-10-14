@@ -18,10 +18,18 @@
     "url": "https://github.com/N3-Hercules/LAN_Alert_Notifications/issues"
   },
   "homepage": "https://github.com/N3-Hercules/LAN_Alert_Notifications#readme",
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
   "dependencies": {
+    "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
+    "email-templates": "^5.0.1",
     "express": "^4.16.4",
+    "handlebars": "^4.0.12",
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.4"
   }
