@@ -9,7 +9,7 @@ const app = express();
 
 app.use(bodyparser.json());
 
-app.post('/api/notifications/send', (req, res) => {
+app.post('/', (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -19,11 +19,10 @@ app.post('/api/notifications/send', (req, res) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL,
+    from: `${req.body.email}`,
     to: process.env.TESTUSER,
-    subject: 'TEST TEST ALERT ALERT',
-    text: 'THIS IS A TEST OF THE LOCAL ALERT NETWORK!',
-    html: '<b>Hello World</b>'
+    subject: `${req.body.name}`,
+    text: `${req.body.message}`,
   };
   transporter.sendMail(mailOptions, (err, res) => {
     if (err) {
