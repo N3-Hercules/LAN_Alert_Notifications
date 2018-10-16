@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.post('/', (req, res) => {
   console.log('Data received', req.body);
   let alarm = alertTracker.dataParser(req.body);
-  console.log('state of alarm', alarm);
+
   if (alarm !== null) {
     console.log('Event is near user!');
     const transporter = nodemailer.createTransport({
@@ -59,27 +59,31 @@ app.post('/', (req, res) => {
      `,
     };
 
-    const friendImpactedEmail = {
-      from: `${process.env.EMAIL}`,
-      to: `${email}`,
-      subject: `${name}! A ${category} alert has been posted near your friend ${alarm.friends.name[0]}!`,
-      html: `Hello ${name},<br>
-      This is your Local Alert Network.<br>
-      A ${category} has been reported near ${alarm.friends.name[0]}'s house!...<br>
+    if (alarm.impactedFriends) {
+      const friendImpactedEmail = {
+        from: `${process.env.EMAIL}`,
+        to: `${email}`,
+        subject: `${name}! A ${category} alert has been posted near your friend ${alarm.impactedFriends.users[0]}!`,
+        html: `Hello ${name},<br>
+        This is your Local Alert Network.<br>
+        A ${category} has been reported near ${alarm.impactedFriends.users[0]}'s house!...<br>
+        ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users}` : 'no other friends have been impacted at this time.'}<br>
+  
+        The location of the alert was recorded at the following coordinates:<br>
+        Latitude: ${alarm.data.latitude}<br>
+        Longitude: ${alarm.data.longitude}<br>
+  
+        Please check on your friend soon...<br>
+        The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
+  
+        Team Hercules<br>
+        <img src=${photo} alt=${category} width='200' height='145'/><br>
+       `,
+      };
+      return friendImpactedEmail;
+    }
 
-      The location of the alert was recorded at the following coordinates:<br>
-      Latitude: ${alarm.data.latitude}<br>
-      Longitude: ${alarm.data.longitude}<br>
-
-      Please check on your friend soon...<br>
-      The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
-
-      Team Hercules<br>
-      <img src=${photo} alt=${category} width='200' height='145'/><br>
-     `,
-    };
-
-    const mailOptions = (alarm.user.impacted === true) ? userImpactedEmail : friendImpactedEmail;
+    const mailOptions = (alarm.user.impacted === true) ? userImpactedEmail : friendImpactedEmail || null;
 
     transporter.sendMail(mailOptions, (err, res) => {
       if (err) {
@@ -94,7 +98,7 @@ app.post('/', (req, res) => {
   }
   res.sendStatus(200);
 });
-  
+
 app.get('/', (req, res) => {
   res.send('Alert Tracker is Live! Keeping you informed about every alert...');
 });

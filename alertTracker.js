@@ -10,8 +10,10 @@
 //   createdAt: '2018-10-13T19:27:56.000Z',
 //   updatedAt: '2018-10-14T02:02:01.000Z' } ],
 // [ { id: 871,
-//   latitude: '47.72154930000000000000',
-//   longitude: '-122.19222980000000000000',
+//   // latitude: '47.72154930000000000000',
+//   // longitude: '-122.19222980000000000000',
+//   latitude: '37.72235900000000000000',
+//   longitude: '-122.15841540000000000000',
 //   notes: '',
 //   category: 'tsunami',
 //   url: null,
@@ -83,7 +85,6 @@ const dataParser = (object) => {
     emails: [],
     homeLat: [],
     homeLong: [],
-    impacted: false,
   };
 
   const data = {
@@ -110,25 +111,37 @@ const dataParser = (object) => {
   friends.homeLat.shift();
   friends.homeLong.shift();
 
+  const impactedFriends = {
+    users: [],
+    emails: [],
+    impacted: false,
+  };
+
+  if (friends.users.length) {
+    console.log('hello')
+    for (let i = 0; i < friends.users.length; ++i) {
+      console.log(friends.users[i])
+      console.log(friends.homeLat)
+      if (distance(data.latitude, data.longitude, friends.homeLat[i], friends.homeLong[i]) < 10) {
+        impactedFriends.users.push(friends.users[i]);
+        impactedFriends.emails.push(friends.emails[i]);
+        impactedFriends.impacted = true;
+      }
+    }
+  }
+  // console.log(impactedFriends.users);
+
   if (distance(data.latitude, data.longitude, user.homeLat, user.homeLong) < 10) {
     console.log('User is impacted');
     user.impacted = true;
-    console.log(user);
-  }
-
-  if (friends.length) {
-    for (let i = 0; i < data.homeLat.length; ++i) {
-      if (distance(data.latitude, data.longitude, data.homeLat, data.homeLong) < 10) {
-        friends.impacted = true;
-      }
-    }
+    // console.log(user);
   }
 
   if (user.impacted) {
     return { user, data };
   }
-  if (friends.impacted) {
-    return { user, data, friends };
+  if (impactedFriends.impacted) {
+    return { user, data, impactedFriends };
   }
   return null;
 };
