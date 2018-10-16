@@ -59,31 +59,55 @@ app.post('/', (req, res) => {
      `,
     };
 
-    if (alarm.impactedFriends) {
-      const friendImpactedEmail = {
-        from: `${process.env.EMAIL}`,
-        to: `${email}`,
-        subject: `${name}! A ${category} alert has been posted near your friend ${alarm.impactedFriends.users[0]}!`,
-        html: `Hello ${name},<br>
-        This is your Local Alert Network.<br>
-        A ${category} has been reported near ${alarm.impactedFriends.users[0]}'s house!...<br>
-        ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users}` : 'no other friends have been impacted at this time.'}<br>
-  
-        The location of the alert was recorded at the following coordinates:<br>
-        Latitude: ${alarm.data.latitude}<br>
-        Longitude: ${alarm.data.longitude}<br>
-  
-        Please check on your friend soon...<br>
-        The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
-  
-        Team Hercules<br>
-        <img src=${photo} alt=${category} width='200' height='145'/><br>
-       `,
-      };
-      return friendImpactedEmail;
-    }
+    const friendImpactedEmail = {
+      from: `${process.env.EMAIL}`,
+      to: `${email}`,
+      subject: `${name}! A ${category} alert has been posted near your friend ${alarm.impactedFriends.users[0]}!`,
+      html: `Hello ${name},<br>
+      This is your Local Alert Network.<br>
+      A ${category} has been reported near ${alarm.impactedFriends.users[0]}'s house!...<br>
+      ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users.map((user) => { return user; })}` : 'no other friends have been impacted at this time.'}<br>
 
-    const mailOptions = (alarm.user.impacted === true) ? userImpactedEmail : friendImpactedEmail || null;
+      The location of the alert was recorded at the following coordinates:<br>
+      Latitude: ${alarm.data.latitude}<br>
+      Longitude: ${alarm.data.longitude}<br>
+
+      Please check on your friend soon...<br>
+      The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
+
+      Team Hercules<br>
+      <img src=${photo} alt=${category} width='200' height='145'/><br>
+     `,
+    };
+    // let friendImpactedEmail = null;
+
+    // if (alarm.impactedFriends) {
+    //   friendImpactedEmail = {
+    //     from: `${process.env.EMAIL}`,
+    //     to: `${email}`,
+    //     subject: `${name}! A ${category} alert has been posted near your friend ${alarm.impactedFriends.users[0]}!`,
+    //     html: `Hello ${name},<br>
+    //     This is your Local Alert Network.<br>
+    //     A ${category} has been reported near ${alarm.impactedFriends.users[0]}'s house!...<br>
+    //     ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users.map((user) => { return user; })}` : 'no other friends have been impacted at this time.'}<br>
+  
+    //     The location of the alert was recorded at the following coordinates:<br>
+    //     Latitude: ${alarm.data.latitude}<br>
+    //     Longitude: ${alarm.data.longitude}<br>
+  
+    //     Please check on your friend soon...<br>
+    //     The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
+  
+    //     Team Hercules<br>
+    //     <img src=${photo} alt=${category} width='200' height='145'/><br>
+    //    `,
+    //   };
+    //   return friendImpactedEmail;
+    // }
+
+    console.log('friendly email', friendImpactedEmail);
+
+    const mailOptions = (alarm.user.impacted === true) ? userImpactedEmail : friendImpactedEmail;
 
     transporter.sendMail(mailOptions, (err, res) => {
       if (err) {

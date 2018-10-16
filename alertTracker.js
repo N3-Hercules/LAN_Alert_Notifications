@@ -118,10 +118,9 @@ const dataParser = (object) => {
   };
 
   if (friends.users.length) {
-    console.log('hello')
+    console.log('Friends impacted')
     for (let i = 0; i < friends.users.length; ++i) {
-      console.log(friends.users[i])
-      console.log(friends.homeLat)
+
       if (distance(data.latitude, data.longitude, friends.homeLat[i], friends.homeLong[i]) < 10) {
         impactedFriends.users.push(friends.users[i]);
         impactedFriends.emails.push(friends.emails[i]);
@@ -129,7 +128,7 @@ const dataParser = (object) => {
       }
     }
   }
-  // console.log(impactedFriends.users);
+  console.log('Friends that were impacted:', impactedFriends.users);
 
   if (distance(data.latitude, data.longitude, user.homeLat, user.homeLong) < 10) {
     console.log('User is impacted');
@@ -138,7 +137,7 @@ const dataParser = (object) => {
   }
 
   if (user.impacted) {
-    return { user, data };
+    return { user, data, impactedFriends };
   }
   if (impactedFriends.impacted) {
     return { user, data, impactedFriends };
