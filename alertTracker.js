@@ -1,47 +1,47 @@
-let sample = [ [ { id: 1,
-  name: 'Nicolas Turner',
-  email: 'nicolasrturner@gmail.com',
-  provider: 'google',
-  provider_id: 2147483647,
-  picture: 'https://lh6.googleusercontent.com/-l_N2cyMTHkE/AAAAAAAAAAI/AAAAAAAAAAs/gKIXkyIgaAs/s96-c/photo.jpg',
-  token: 0,
-  homeLat: '47.72155850000000000000',
-  homeLong: '-122.19219729999999000000',
-  createdAt: '2018-10-13T19:27:56.000Z',
-  updatedAt: '2018-10-14T02:02:01.000Z' } ],
-[ { id: 871,
-  latitude: '47.72154930000000000000',
-  longitude: '-122.19222980000000000000',
-  notes: '',
-  category: 'tsunami',
-  url: null,
-  photoTag: '',
-  createdAt: '2018-10-16T02:46:07.000Z',
-  updatedAt: '2018-10-16T02:46:07.000Z',
-  EventId: null,
-  UserId: null } ],
-[ { id: 11,
-  name: 'Nathan Vang',
-  email: 'vang.nathany@gmail.com',
-  provider: 'google',
-  provider_id: 2147483647,
-  picture: 'https://lh3.googleusercontent.com/-8xSRfi__hF0/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DVAndCid6xmJab1eFvt0zRcJIjZIg/s96-c/photo.jpg',
-  token: 0,
-  homeLat: '37.72235900000000000000',
-  homeLong: '-122.15841540000000000000',
-  createdAt: '2018-10-13T19:29:12.000Z',
-  updatedAt: '2018-10-13T19:30:36.000Z' },
-{ id: 41,
-  name: 'nathan ong',
-  email: 'nathan.d.ong@gmail.com',
-  provider: 'google',
-  provider_id: 2147483647,
-  picture: 'https://lh5.googleusercontent.com/-YsUz_PcvkmY/AAAAAAAAAAI/AAAAAAAAAB4/DMaf7nsMRm4/s96-c/photo.jpg',
-  token: 0,
-  homeLat: '37.72235900000000000000',
-  homeLong: '-122.15841540000000000000',
-  createdAt: '2018-10-13T22:41:15.000Z',
-  updatedAt: '2018-10-15T15:19:05.000Z' } ] ]
+// let sample = [ [ { id: 1,
+//   name: 'Nicolas Turner',
+//   email: 'nicolasrturner@gmail.com',
+//   provider: 'google',
+//   provider_id: 2147483647,
+//   picture: 'https://lh6.googleusercontent.com/-l_N2cyMTHkE/AAAAAAAAAAI/AAAAAAAAAAs/gKIXkyIgaAs/s96-c/photo.jpg',
+//   token: 0,
+//   homeLat: '47.72155850000000000000',
+//   homeLong: '-122.19219729999999000000',
+//   createdAt: '2018-10-13T19:27:56.000Z',
+//   updatedAt: '2018-10-14T02:02:01.000Z' } ],
+// [ { id: 871,
+//   latitude: '47.72154930000000000000',
+//   longitude: '-122.19222980000000000000',
+//   notes: '',
+//   category: 'tsunami',
+//   url: null,
+//   photoTag: '',
+//   createdAt: '2018-10-16T02:46:07.000Z',
+//   updatedAt: '2018-10-16T02:46:07.000Z',
+//   EventId: null,
+//   UserId: null } ],
+// [ { id: 11,
+//   name: 'Nathan Vang',
+//   email: 'vang.nathany@gmail.com',
+//   provider: 'google',
+//   provider_id: 2147483647,
+//   picture: 'https://lh3.googleusercontent.com/-8xSRfi__hF0/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DVAndCid6xmJab1eFvt0zRcJIjZIg/s96-c/photo.jpg',
+//   token: 0,
+//   homeLat: '37.72235900000000000000',
+//   homeLong: '-122.15841540000000000000',
+//   createdAt: '2018-10-13T19:29:12.000Z',
+//   updatedAt: '2018-10-13T19:30:36.000Z' },
+// { id: 41,
+//   name: 'nathan ong',
+//   email: 'nathan.d.ong@gmail.com',
+//   provider: 'google',
+//   provider_id: 2147483647,
+//   picture: 'https://lh5.googleusercontent.com/-YsUz_PcvkmY/AAAAAAAAAAI/AAAAAAAAAB4/DMaf7nsMRm4/s96-c/photo.jpg',
+//   token: 0,
+//   homeLat: '37.72235900000000000000',
+//   homeLong: '-122.15841540000000000000',
+//   createdAt: '2018-10-13T22:41:15.000Z',
+//   updatedAt: '2018-10-15T15:19:05.000Z' } ] ]
 // New data flow schema = user, alert, friends[?]
 
 const distance = (lat1, lon1, lat2, lon2) => {
@@ -88,6 +88,7 @@ const dataParser = (object) => {
 
   const data = {
     category: [],
+    photo: '',
     latitude: [],
     longitude: [],
   };
@@ -100,6 +101,7 @@ const dataParser = (object) => {
     if (key === 'category') return data.category.push(value);
     if (key === 'latitude') return data.latitude.push(value);
     if (key === 'longitude') return data.longitude.push(value);
+    if (key === 'url') data.photo = value;
     return value;
   });
 
@@ -131,6 +133,6 @@ const dataParser = (object) => {
   return null;
 };
 
-console.log(dataParser(sample));
+// console.log(dataParser(sample));
 
 exports.dataParser = dataParser;
