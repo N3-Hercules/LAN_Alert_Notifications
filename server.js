@@ -67,19 +67,25 @@ app.post('/', (req, res) => {
       from: `${process.env.EMAIL}`,
       to: `${email}`,
       subject: `${name}! A ${category} alert has been posted near your friend ${alarm.impactedFriends.users[0]}!`,
-      html: `Hello ${name},<br>
+      html: `<b>${name}</b>,<br>
+      <br>
       This is your Local Alert Network.<br>
-      A ${category} has been reported near ${alarm.impactedFriends.users}'s house!...<br>
-      ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users.map((user) => { return user; })}` : 'no other friends have been impacted at this time.'}<br>
+      <br>
+      A <b>${category}</b> has been reported near ${alarm.impactedFriends.users}'s house!...<br>
 
+      ${(alarm.impactedFriends.users > 1) ? `The following friends have also been impacted: ${alarm.impactedFriends.users.map((user) => { return user; })}` : 'No other friends have been impacted at this time.'}<br>
+      <br>
       The location of the alert was recorded at the following coordinates:<br>
-      Latitude: ${alarm.data.latitude}<br>
-      Longitude: ${alarm.data.longitude}<br>
-
+      <b>Latitude</b>: ${alarm.data.latitude}<br>
+      <b>Longitude</b>: ${alarm.data.longitude}<br>
+      <br>
+      Find out more here: <a href="https://local-alert-network.herokuapp.com/">LAN</a>
+      <br>
       Please check on your friend soon...<br>
       The Local Alert Network is here to keep you informed of any alerts impacting those you care about.<br>
-
+      <br>
       Team Hercules<br>
+      <br>
       <img src=${photo} alt=${category} width='200' height='145'/><br>
      `,
     };
